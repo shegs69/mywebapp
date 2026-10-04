@@ -1,13 +1,25 @@
 name: MyWebApp CI
 
 on:
+  pull_request:
+    branches:
+      - main
   push:
     branches:
       - main
 
+permissions:
+  contents: read
+
 jobs:
-  confirm-trigger:
+  python-syntax:
     runs-on: ubuntu-latest
     steps:
-      - name: Show branch
-        run: echo "Workflow ran on $GITHUB_REF_NAME"
+      - name: Check out code
+        uses: actions/checkout@v7
+      - name: Set up Python
+        uses: actions/setup-python@v7
+        with:
+          python-version: '3.9'
+      - name: Check Python syntax
+        run: python -m compileall -q frontend users-api products-api orders-api uploads-api
