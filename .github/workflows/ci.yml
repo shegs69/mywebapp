@@ -1,0 +1,13 @@
+name: MyWebApp CI
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  confirm-trigger:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Show branch
+        run: echo "Workflow ran on $GITHUB_REF_NAME"

@@ -14,6 +14,6 @@ COPY requirements.txt .
 ## The following command installs the Python dependencies listed in the requirements.txt file without using the cache to reduce the image size.
 RUN pip install --no-cache-dir -r requirements.txt
 COPY . .
-## The CMD instruction specifies the command to run the FastAPI application using gunicorn, with the main module and app instance specified.
+## The CMD instruction specifies the command to run the application using gunicorn, with the main module and app instance specified.
 # frontend
 CMD ["gunicorn", "--bind", "0.0.0.0:5000", "app:app"]
