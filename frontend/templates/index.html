@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Enterprise Store</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">🛍️ Enterprise Store</div>
+
+    <nav class="tabs" aria-label="Sections">
+      <button class="tab active" data-view="shop" type="button">Shop</button>
+      <button class="tab" data-view="orders" type="button">My orders</button>
+      <button class="tab" data-view="admin" type="button">Manage</button>
+    </nav>
+
+    <div class="actions">
+      <select id="user-select" aria-label="Current user"></select>
+      <button id="new-user-btn" class="btn ghost" type="button">+ User</button>
+      <button id="cart-btn" class="btn primary" type="button">
+        Cart <span id="cart-count" class="badge">0</span>
+      </button>
+    </div>
+  </header>
+
+  <main>
+    <section id="view-shop" class="view">
+      <div class="hero" style="background-image: url('{{ url_for('static', filename='images/hero.jpg') }}')">
+        <div class="hero-text">
+          <h1>Upgrade your tech</h1>
+          <p>Laptops, phones, audio and wearables — delivered fast.</p>
+          <a class="btn primary" href="#product-grid">Shop now</a>
+        </div>
+      </div>
+      <div class="view-head">
+        <h2 class="section-title">Products</h2>
+        <input id="search" type="search" placeholder="Search products…" aria-label="Search products">
+      </div>
+      <div id="product-grid" class="grid"><p class="empty">Loading products…</p></div>
+    </section>
+
+    <section id="view-orders" class="view" hidden>
+      <div class="view-head"><h1>My orders</h1></div>
+      <div id="orders-list" class="orders"></div>
+    </section>
+
+    <section id="view-admin" class="view" hidden>
+      <div class="view-head"><h1>Manage products</h1></div>
+
+      <form id="product-form" class="card form">
+        <h2>Add a product</h2>
+        <div class="form-row">
+          <label>Name
+            <input name="name" required maxlength="120" placeholder="e.g. Keyboard">
+          </label>
+          <label>Price (USD)
+            <input name="price" type="number" min="0" step="0.01" required placeholder="49.99">
+          </label>
+        </div>
+        <label>Description
+          <textarea name="description" rows="2" maxlength="1000" placeholder="Optional"></textarea>
+        </label>
+        <label>Image (PNG, JPEG, GIF or WebP, up to 5&nbsp;MB)
+          <input name="image" type="file" accept="image/png,image/jpeg,image/gif,image/webp">
+        </label>
+        <button class="btn primary" type="submit">Add product</button>
+      </form>
+
+      <div class="card table-wrap">
+        <table>
+          <thead><tr><th>ID</th><th>Name</th><th class="num">Price</th><th></th></tr></thead>
+          <tbody id="admin-products"></tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+
+  <div id="backdrop" hidden></div>
+  <aside id="cart-drawer" class="drawer" aria-hidden="true" aria-label="Shopping cart">
+    <div class="drawer-head">
+      <h2>Your cart</h2>
+      <button id="cart-close" class="icon-btn" type="button" aria-label="Close cart">✕</button>
+    </div>
+    <div id="cart-items" class="cart-items"></div>
+    <div class="drawer-foot">
+      <div class="total-row"><span>Total</span><strong id="cart-total">$0.00</strong></div>
+      <button id="checkout-btn" class="btn primary block" type="button" disabled>Place order</button>
+    </div>
+  </aside>
+
+  <dialog id="user-dialog">
+    <form id="user-form" method="dialog" class="form">
+      <h2>New user</h2>
+      <label>Name <input name="name" required maxlength="100"></label>
+      <label>Email <input name="email" type="email" required maxlength="254"></label>
+      <div class="dialog-actions">
+        <button class="btn ghost" type="button" id="user-cancel">Cancel</button>
+        <button class="btn primary" type="submit">Create</button>
+      </div>
+    </form>
+  </dialog>
+
+  <footer class="footer">
+    {% for name, url in services.items() %}
+    <span class="pill" data-service="{{ name }}" title="{{ url }}"><span class="dot"></span>{{ name|capitalize }} API</span>
+    {% endfor %}
+  </footer>
+
+  <div id="toasts" aria-live="polite"></div>
+  <script src="{{ url_for('static', filename='app.js') }}"></script>
+</body>
+</html>
